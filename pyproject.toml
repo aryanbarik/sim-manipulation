@@ -1,0 +1,45 @@
+[project]
+name = "sim-manipulation"
+version = "0.1.0"
+description = "Reproducible simulated robot manipulation study"
+readme = "README.md"
+authors = [{ name = "Aryan Barik", email = "aryan.kunmoon@gmail.com" }]
+requires-python = ">=3.12,<3.13"
+dependencies = [
+  "lerobot[dataset,training,diffusion]==0.7.0",
+  "mujoco>=3.3,<4",
+  "mujoco-menagerie==2026.11.3",
+  "numpy>=2,<2.3",
+  "pydantic>=2",
+  "pyyaml>=6",
+]
+
+[project.optional-dependencies]
+cpu = ["torch==2.14.*", "torchvision==0.29.*"]
+[dependency-groups]
+dev = ["pytest", "ruff"]
+eval = ["matplotlib", "pandas", "scipy"]
+rl = ["stable-baselines3==2.9.2"]
+
+[build-system]
+requires = ["uv_build>=0.12.21,<0.13.0"]
+build-backend = "uv_build"
+
+[tool.uv.build-backend]
+module-name = "simmanip"
+
+[tool.uv.sources]
+torch = { index = "pytorch-cpu" }
+torchvision = { index = "pytorch-cpu" }
+
+[[tool.uv.index]]
+name = "pytorch-cpu"
+url = "https://download.pytorch.org/whl/cpu"
+explicit = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = ["network: needs network", "slow: long-running", "gpu: requires a GPU"]
+
+[tool.ruff]
+line-length = 100
